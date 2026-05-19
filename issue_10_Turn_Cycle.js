@@ -1,4 +1,4 @@
-// Issue #10: Tur döngüsü ve sıra yönetimi
+// Issue #10: Tur döngüsü ve sıra yönetim
 if (this.state.phase === 'LEAD') {
     this.state.battlefield = { card, owner: player };
     this.state.phase = 'ATTACK';
