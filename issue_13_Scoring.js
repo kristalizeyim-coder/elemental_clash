@@ -1,4 +1,4 @@
-// Issue #13: Puan kazanma sistemi
+// Issue #13: Puan kazanma sistem
 if (winnerPlayer === 'player') {
     this.state.playerScore += points;
 } else if (winnerPlayer === 'ai') {
