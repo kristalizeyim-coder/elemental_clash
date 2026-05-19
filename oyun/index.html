@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Echo: Elemental Chains — Elementlerin gücüyle savaştığın stratejik kart oyunu.">
+    <title>Echo: Elemental Chains</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <!-- ===== LANDING PAGE ===== -->
+        <div class="landing-overlay active" id="landing-overlay">
+            <div class="landing-particles">
+                <div class="landing-particle lp-fire"></div>
+                <div class="landing-particle lp-water"></div>
+                <div class="landing-particle lp-earth"></div>
+                <div class="landing-particle lp-air"></div>
+            </div>
+            <div class="landing-content">
+                <div class="landing-element-ring">
+                    <span class="landing-element-icon le-air">🌪️</span>
+                    <span class="landing-element-icon le-fire">🔥</span>
+                    <span class="landing-element-icon le-water">💧</span>
+                    <span class="landing-element-icon le-earth">⛰️</span>
+                </div>
+                <h1 class="landing-title">ELEMENTAL<br><span class="landing-title-accent">CLASH</span></h1>
+                <p class="landing-subtitle">Elementlerin gücüyle savaş</p>
+                <button class="landing-play-btn" id="landing-play-btn">OYNA</button>
+                <div class="landing-hint">Kartlarını seç, rakibini yen</div>
+            </div>
+        </div>
+
+        <!-- ===== LOBBY PAGE ===== -->
+        <div class="lobby-overlay" id="lobby-overlay">
+            <div class="lobby-content">
+                <h2 class="lobby-title">LOBİ SEÇİMİ</h2>
+                <div class="lobby-grid">
+                    <button class="lobby-box active-lobby" id="lobby-test">Test Lobi</button>
+                    <button class="lobby-box disabled-lobby">Lobi 2 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 3 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 4 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 5 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 6 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 7 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 8 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 9 <span class="lobby-soon">(Yakında)</span></button>
+                    <button class="lobby-box disabled-lobby">Lobi 10 <span class="lobby-soon">(Yakında)</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Button -->
+        <button class="info-btn" id="info-btn" title="Kart Bilgileri">ⓘ</button>
+
+        <!-- ===== MAIN GAME UI ===== -->
+        <div id="main-game-ui" style="display: none;">
+            <!-- Difficulty Selector -->
+            <div class="difficulty-selector">
+            <button class="diff-btn" data-diff="easy" id="diff-easy">Kolay</button>
+            <button class="diff-btn active" data-diff="medium" id="diff-medium">Orta</button>
+            <button class="diff-btn" data-diff="hard" id="diff-hard">Zor</button>
+        </div>
+
+        <!-- ===== TOP: AI Area ===== -->
+        <div class="top-section">
+            <div class="player-info ai" id="ai-info">
+                <div class="avatar" id="ai-avatar">🤖</div>
+                <div class="player-details">
+                    <div class="player-name">Rakip</div>
+                    <div class="player-score-display">
+                        <span class="score-value" id="ai-score">0</span>
+                        <span class="echo-count" id="ai-echo-count">Echo: 0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-hand" id="ai-hand"></div>
+        </div>
+
+        <!-- ===== MIDDLE: Battlefield ===== -->
+        <div class="middle-section">
+            <!-- Status Bar -->
+            <div class="status-bar-wrapper">
+                <div class="round-display" id="round-display">Tur 1</div>
+                <div class="status-bar" id="status-bar">Oyun Başlıyor...</div>
+            </div>
+
+            <div class="battlefield" id="battlefield">
+                <div class="battlefield-ring"></div>
+                <div class="battlefield-label">Savaş Alanı</div>
+                <div class="battlefield-card-slot" id="battlefield-slot"></div>
+            </div>
+        </div>
+
+        <!-- ===== BOTTOM: Player Area ===== -->
+        <div class="bottom-section">
+            <div class="player-hand" id="player-hand"></div>
+            <div class="player-info human" id="player-info">
+                <div class="player-details" style="text-align: right;">
+                    <div class="player-name">Sen</div>
+                    <div class="player-score-display">
+                        <span class="score-value" id="player-score">0</span>
+                        <span class="echo-count" id="player-echo-count">Echo: 0</span>
+                    </div>
+                </div>
+                <div class="avatar" id="player-avatar">⚔️</div>
+            </div>
+        </div>
+
+        <!-- ===== SIDE PANELS ===== -->
+        <!-- Game Log -->
+        <div class="game-log-panel" id="game-log">
+            <div class="game-log-title">Oyun Günlüğü</div>
+            <ul class="game-log-list" id="game-log-list"></ul>
+        </div>
+
+        <!-- Echo Collections -->
+        <div class="echo-panel ai-echo" id="ai-echo-panel">
+            <div class="echo-panel-title">Rakip Echo</div>
+            <div class="echo-cards" id="ai-echo-cards"></div>
+        </div>
+        <div class="echo-panel player-echo" id="player-echo-panel">
+            <div class="echo-panel-title">Senin Echo</div>
+            <div class="echo-cards" id="player-echo-cards"></div>
+        </div>
+
+        <!-- ===== INTERACTION OVERLAY ===== -->
+        <div class="interaction-overlay" id="interaction-overlay">
+            <div class="interaction-panel">
+                <div class="interaction-title" id="inter-title"></div>
+                <div class="interaction-cards" id="inter-cards"></div>
+                <div class="interaction-desc" id="inter-desc"></div>
+                <div class="interaction-sinergy" id="inter-sinergy"></div>
+                <div class="interaction-points" id="inter-points"></div>
+                <button class="interaction-btn" id="inter-continue-btn">Devam Et</button>
+            </div>
+        </div>
+
+        <!-- ===== GAME OVER OVERLAY ===== -->
+        <div class="game-over-overlay" id="game-over-overlay">
+            <div class="game-over-panel">
+                <div class="game-over-title" id="go-title"></div>
+                <div class="game-over-score" id="go-score"></div>
+                <div class="game-over-msg" id="go-msg"></div>
+                <div class="game-over-countdown" id="go-countdown"></div>
+                <button class="restart-btn" id="restart-btn">Yeni Tur</button>
+            </div>
+        </div>
+        </div> <!-- End of MAIN GAME UI -->
+
+        <!-- ===== INFO MODAL ===== -->
+        <div class="info-overlay" id="info-overlay">
+            <div class="info-panel">
+                <button class="info-close-btn" id="info-close-btn">✕</button>
+                <h2 class="info-title">Kart Değerleri</h2>
+                <p class="info-subtitle">Her kartın puan değeri aşağıda listelenmiştir.</p>
+                <table class="info-table">
+                    <thead>
+                        <tr><th>Değer</th><th>Kart Adı</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>As</td></tr>
+                        <tr><td>2</td><td>2</td></tr>
+                        <tr><td>3</td><td>3</td></tr>
+                        <tr><td>4</td><td>4</td></tr>
+                        <tr><td>5</td><td>5</td></tr>
+                        <tr><td>6</td><td>6</td></tr>
+                        <tr><td>7</td><td>7</td></tr>
+                        <tr><td>8</td><td>8</td></tr>
+                        <tr><td>9</td><td>9</td></tr>
+                        <tr><td>10</td><td>10</td></tr>
+                        <tr><td>11</td><td>Vale</td></tr>
+                        <tr><td>12</td><td>Kız</td></tr>
+                        <tr><td>13</td><td>Şah</td></tr>
+                        <tr class="info-joker-row"><td>15</td><td>🃏 Joker</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="info-section-title">Element Etkileşimleri</h3>
+                <div class="info-interactions">
+                    <div class="info-rule">🌪️ <strong>Hava</strong> → ⛰️ Toprağı yener</div>
+                    <div class="info-rule">🔥 <strong>Ateş</strong> → 🌪️ Havayı yener</div>
+                    <div class="info-rule">💧 <strong>Su</strong> → 🔥 Ateşi yener</div>
+                    <div class="info-rule">⛰️ <strong>Toprak</strong> → 💧 Suyu yener</div>
+                    <div class="info-rule">🃏 <strong>Joker</strong> → Her Şeyi yener (15 puan)</div>
+                </div>
+
+                <h3 class="info-section-title">Nötr Etkileşimler</h3>
+                <div class="info-interactions">
+                    <div class="info-rule info-rule-neutral">🔥 <strong>Ateş</strong> ↔ ⛰️ <strong>Toprak</strong> — Etkileşim yok, kartlar atılır</div>
+                    <div class="info-rule info-rule-neutral">💧 <strong>Su</strong> ↔ 🌪️ <strong>Hava</strong> — Etkileşim yok, kartlar atılır</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game-engine.js"></script>
+    <script src="js/ai-opponent.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/ui-controller.js"></script>
+</body>
+
+</html>
