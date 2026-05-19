@@ -1,4 +1,4 @@
-# Issue #20: Kural Dokümantasyonu
+# Issue #20: Kural Dokümantasyon
 
 ### Puanlama Sistemi
 - **Predator:** İki kartın toplamı kadar puan kazandırır.
