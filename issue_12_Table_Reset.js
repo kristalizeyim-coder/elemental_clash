@@ -1,4 +1,4 @@
-// Issue #12: Masa sıfırlama mekaniği
+// Issue #12: Masa sıfırlama mekanik
 applyResult(result) {
     // ...
     if (result.capture) {
