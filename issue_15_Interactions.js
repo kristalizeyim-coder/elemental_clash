@@ -1,4 +1,4 @@
-// Issue #15: Element etkileşim algoritması
+// Issue #15: Element etkileşim algoritma
 const INTERACTIONS = {
     AIR_EARTH:   { winner: 'attacker', title: 'Hava Toprağı Yener' },
     FIRE_AIR:    { winner: 'attacker', title: 'Ateş Havayı Yener' },
