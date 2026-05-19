@@ -1,4 +1,4 @@
-// Issue #18: Win condition
+// Issue #18: Win condition.
 determineWinner() {
     if (this.state.playerScore > this.state.aiScore) {
         return "🏆 Oyuncu Kazandı!";
