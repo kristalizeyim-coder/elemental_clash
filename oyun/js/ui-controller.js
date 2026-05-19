@@ -1,5 +1,5 @@
 /**
- * Echo: Elemental Chains — UI Controller
+ * Echo: Elemental Chains — UI Control
  * Renders game state, handles user input, manages AI turns and game flow.
  */
 class UIController {
