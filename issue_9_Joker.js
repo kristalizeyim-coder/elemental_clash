@@ -1,4 +1,4 @@
-// Issue #9: Joker kart mekaniği
+// Issue #9: Joker kart mekanik
 if (attackerCard.element === 'JOKER' || targetCard.element === 'JOKER') {
     if (atkIsJoker && tgtIsJoker) {
         return { type: 'JOKER_DRAW', points: 0, capture: false };
