@@ -1,5 +1,5 @@
 /**
- * Echo: Elemental Chains — Core Game Engine
+ * Echo: Elemental Chains — Core Game Engines
  * Card model, deck, interaction resolution, scoring with Echo Sinergy.
  */
 

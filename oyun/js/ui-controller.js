@@ -1,4 +1,7 @@
-
+/**
+ * Echo: Elemental Chains — UI Controller (4-Player Version)
+ * Renders circular game board, binds user controls, handles local/WebRTC networks.
+ */
 class UIController {
     constructor() {
         this.engine = new GameEngine();
@@ -852,7 +855,7 @@ class UIController {
         }
     }
 
-    // ============= GAME OVER STATE  =============
+    // ============= GAME OVER STATE =============
 
     showGameOver(data) {
         if (this.interactionInterval) clearInterval(this.interactionInterval);
