@@ -1,5 +1,5 @@
 /**
- * Echo: Elemental Chains — AI Opponent
+ * Echo: Elemental Chains — AI Opponent (4-Player Version)
  * Three difficulty levels: Easy, Medium, Hard
  */
 class AIOpponent {
@@ -8,14 +8,17 @@ class AIOpponent {
     }
 
     // Choose a card to play based on difficulty
-    chooseCard(gameState) {
-        const hand = gameState.aiHand;
+    chooseCard(gameState, aiPlayerId) {
+        const player = gameState.players.find(p => p.id === aiPlayerId);
+        if (!player) return null;
+
+        const hand = player.hand;
         if (hand.length === 0) return null;
 
         switch (this.difficulty) {
-            case 'easy':   return this.easyPlay(hand, gameState);
-            case 'hard':   return this.hardPlay(hand, gameState);
-            default:       return this.mediumPlay(hand, gameState);
+            case 'easy': return this.easyPlay(hand, gameState);
+            case 'hard': return this.hardPlay(hand, gameState, aiPlayerId);
+            default: return this.mediumPlay(hand, gameState, aiPlayerId);
         }
     }
 
@@ -25,24 +28,27 @@ class AIOpponent {
     }
 
     // MEDIUM: Tries to pick winning matchups
-    mediumPlay(hand, state) {
+    mediumPlay(hand, state, aiPlayerId) {
         if (state.phase === 'LEAD' || !state.battlefield) {
             // Lead with highest value card
             return hand.reduce((best, c) => c.value > best.value ? c : best, hand[0]);
         }
 
         const target = state.battlefield.card;
-        const scored = this.scoreCards(hand, target, state);
+        const scored = this.scoreCards(hand, target, state, aiPlayerId);
         // Pick the best scoring card
         scored.sort((a, b) => b.score - a.score);
         return scored[0].card;
     }
 
-    // HARD: Considers sinergy, future turns, and minimizes opponent options
-    hardPlay(hand, state) {
+    // HARD: Considers synergy, future turns, and minimizes opponent options
+    hardPlay(hand, state, aiPlayerId) {
+        const player = state.players.find(p => p.id === aiPlayerId);
+        const echo = player ? player.echo : [];
+
         if (state.phase === 'LEAD' || !state.battlefield) {
-            // Lead with a card that has sinergy bonus if possible
-            const sinergyCards = hand.filter(c => state.aiEcho.some(e => e.element === c.element));
+            // Lead with a card that has synergy bonus if possible
+            const sinergyCards = hand.filter(c => echo.some(e => e.element === c.element));
             if (sinergyCards.length > 0) {
                 return sinergyCards.reduce((best, c) => c.value > best.value ? c : best, sinergyCards[0]);
             }
@@ -52,12 +58,12 @@ class AIOpponent {
         }
 
         const target = state.battlefield.card;
-        const scored = this.scoreCards(hand, target, state);
+        const scored = this.scoreCards(hand, target, state, aiPlayerId);
 
-        // Hard AI also considers sinergy potential
+        // Hard AI also considers synergy potential
         for (const s of scored) {
-            if (state.aiEcho.some(e => e.element === s.card.element)) {
-                s.score += 5; // Bonus for sinergy
+            if (echo.some(e => e.element === s.card.element)) {
+                s.score += 5; // Bonus for synergy
             }
         }
 
@@ -66,43 +72,57 @@ class AIOpponent {
     }
 
     // Score each card against the target
-    scoreCards(hand, targetCard, state) {
+    scoreCards(hand, targetCard, state, aiPlayerId) {
+        const aiPlayer = state.players.find(p => p.id === aiPlayerId);
+        const targetPlayer = state.players.find(p => p.id === state.battlefield.ownerId);
+
+        const aiEcho = aiPlayer ? aiPlayer.echo : [];
+        const tgtEcho = targetPlayer ? targetPlayer.echo : [];
+
         return hand.map(card => {
             let score = 0;
 
+            // Compute effective values including synergy
+            const cardSinergy = aiEcho.some(e => e.element === card.element);
+            const targetSinergy = tgtEcho.some(e => e.element === targetCard.element);
+
+            const atkVal = cardSinergy ? Math.ceil(card.value * 1.5) : card.value;
+            const tgtVal = targetSinergy ? Math.ceil(targetCard.value * 1.5) : targetCard.value;
+
             // Joker logic
             if (card.element === 'JOKER') {
-                // Joker always wins (unless target is also Joker = draw)
                 if (targetCard.element === 'JOKER') {
-                    score = -5; // Joker vs Joker is a waste
+                    score = -5; // Joker vs Joker is a waste (both discarded, no points)
                 } else {
-                    score = JOKER_POINTS + 10; // Very high priority to play
+                    score = JOKER_POINTS + 10; // High priority to play Joker to win
                 }
                 return { card, score };
             }
 
             if (targetCard.element === 'JOKER') {
-                // Attacking into a Joker = guaranteed loss
+                // Attacking into a Joker is a guaranteed loss
                 score = -20;
                 return { card, score };
             }
 
             if (card.element === targetCard.element) {
-                // Mirror: higher value wins, score = sum of both
-                score = card.value > targetCard.value ? card.value + targetCard.value : -card.value;
+                // Mirror: higher effective value wins, score = sum of both
+                score = atkVal > tgtVal ? atkVal + tgtVal : -atkVal;
             } else {
                 const key = `${card.element}_${targetCard.element}`;
                 const inter = INTERACTIONS[key];
                 if (inter) {
                     if (inter.type === 'PREDATOR') {
-                        score = inter.pts(card.value, targetCard.value) + 10;
+                        // We win! Score is the points we gain
+                        score = inter.pts(atkVal, tgtVal) + 10;
                     } else if (inter.type === 'PREY' && inter.winner === 'target') {
-                        score = -inter.pts(card.value, targetCard.value);
+                        // Target wins (we lose). Negative score
+                        score = -inter.pts(atkVal, tgtVal);
                     } else if (inter.type === 'PREY') {
-                        // Water stays cases — not terrible
+                        // Water stays cases — not terrible but no capture
                         score = -2;
                     } else {
-                        // Neutral — slight negative
+                        // Neutral (both discarded) — slight negative
                         score = -1;
                     }
                 }
