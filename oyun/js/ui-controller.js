@@ -855,7 +855,7 @@ class UIController {
         }
     }
 
-    // ============= GAME OVER STATE =============
+    // ============= GAME OVER STATE  =============
 
     showGameOver(data) {
         if (this.interactionInterval) clearInterval(this.interactionInterval);
