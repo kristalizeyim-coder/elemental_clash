@@ -46,7 +46,6 @@
                         <span class="avatar-option" data-emoji="🦊">🦊</span>
                         <span class="avatar-option" data-emoji="🐯">🐯</span>
                         <span class="avatar-option" data-emoji="👽">👽</span>
-                        <span class="avatar-option" data-emoji="🤖">🤖</span>
                     </div>
                 </div>
 
@@ -82,6 +81,10 @@
                             <button class="lobby-box-btn" id="join-room-btn">KATIL</button>
                         </div>
                     </div>
+
+                    <button class="lobby-box-btn cancel-btn" id="lobby-back-btn"
+                        style="position: fixed; bottom: 20px; left: 20px; width: auto; padding: 8px 16px; font-size: 12px; margin: 0; min-width: auto; height: auto;">←
+                        GERİ</button>
                 </div>
 
                 <!-- Room Detail Area (Active Room Lobby) -->
@@ -219,35 +222,16 @@
 
             </div> <!-- End of game-table -->
 
-            <!-- ===== SIDE PANELS ===== -->
-            <!-- Game Log -->
-            <div class="game-log-panel" id="game-log">
-                <div class="game-log-title">Oyun Günlüğü</div>
-                <ul class="game-log-list" id="game-log-list"></ul>
-            </div>
 
-            <!-- Echo Collections (Compact panel showing everyone's Echo piles) -->
-            <div class="echo-collections-container" id="echo-collections-container">
-                <div class="echo-panel-compact" id="echo-panel-p1">
-                    <div class="echo-panel-title" id="echo-title-p1">Senin Echo</div>
-                    <div class="echo-cards" id="echo-cards-p1"></div>
-                </div>
-                <div class="echo-panel-compact" id="echo-panel-p2">
-                    <div class="echo-panel-title" id="echo-title-p2">P2 Echo</div>
-                    <div class="echo-cards" id="echo-cards-p2"></div>
-                </div>
-                <div class="echo-panel-compact" id="echo-panel-p3">
-                    <div class="echo-panel-title" id="echo-title-p3">P3 Echo</div>
-                    <div class="echo-cards" id="echo-cards-p3"></div>
-                </div>
-                <div class="echo-panel-compact" id="echo-panel-p4">
-                    <div class="echo-panel-title" id="echo-title-p4">P4 Echo</div>
-                    <div class="echo-cards" id="echo-cards-p4"></div>
-                </div>
-            </div>
 
             <!-- Leave Game Button -->
-            <button class="leave-game-btn" id="leave-game-btn" title="Oyundan Ayrıl">🚪</button>
+            <button class="leave-game-btn" id="leave-game-btn" title="Oyundan Ayrıl"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg></button>
 
             <!-- ===== INTERACTION OVERLAY ===== -->
             <div class="interaction-overlay" id="interaction-overlay">
@@ -332,15 +316,15 @@
                         </tr>
                         <tr>
                             <td>11</td>
-                            <td>Vale</td>
+                            <td>11</td>
                         </tr>
                         <tr>
                             <td>12</td>
-                            <td>Kız</td>
+                            <td>12</td>
                         </tr>
                         <tr>
                             <td>13</td>
-                            <td>Şah</td>
+                            <td>13</td>
                         </tr>
                         <tr class="info-joker-row">
                             <td>15</td>
