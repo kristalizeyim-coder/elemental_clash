@@ -88,6 +88,25 @@
         height: 84px;
     }
 
+    .card-emoji {
+        font-size: 20px;
+    }
+
+    .card-value {
+        font-size: 14px;
+    }
+
+    .card-element-name {
+        font-size: 8px;
+        letter-spacing: 0;
+        margin-top: 2px;
+    }
+
+    .card-corner {
+        font-size: 10px;
+        padding: 2px;
+    }
+
     .seat-left {
         left: 5px;
         flex-direction: row-reverse;
@@ -111,9 +130,15 @@
         min-width: 44px;
     }
 
-    /* Hide player names on mobile to save space */
+    /* Show player names on mobile but smaller */
     .player-name {
-        display: none;
+        display: block;
+        font-size: 8px;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60px;
     }
 
     .player-score-display {
@@ -160,11 +185,12 @@
     .status-bar {
         white-space: normal;
         text-align: center;
-        font-size: 11px;
-        line-height: 1.4;
-        padding: 6px 12px;
+        font-size: 9px;
+        line-height: 1.2;
+        padding: 4px 8px;
         width: 100%;
         box-sizing: border-box;
+        letter-spacing: 0.5px;
     }
 
     .seat-bottom {
@@ -197,11 +223,22 @@
     }
 
     .card-emoji {
-        font-size: 18px;
+        font-size: 16px;
+        margin-bottom: 2px;
     }
 
     .card-value {
-        font-size: 14px;
+        font-size: 12px;
+    }
+
+    .card-element-name {
+        font-size: 7px;
+        margin-top: 1px;
+    }
+
+    .card-corner {
+        font-size: 8px;
+        padding: 1px;
     }
 
     .status-bar-wrapper {
