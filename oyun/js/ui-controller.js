@@ -28,6 +28,7 @@ class UIController {
             createRoomBtn: document.getElementById('create-room-btn'),
             roomCodeInput: document.getElementById('room-code-input'),
             joinRoomBtn: document.getElementById('join-room-btn'),
+            lobbyBackBtn: document.getElementById('lobby-back-btn'),
 
             roomLobbyPanel: document.getElementById('room-lobby-panel'),
             lobbyRoomCode: document.getElementById('lobby-room-code'),
@@ -105,6 +106,10 @@ class UIController {
         this.dom.copyCodeBtn.addEventListener('click', () => this.copyRoomCode());
         this.dom.addAiBtn.addEventListener('click', () => this.network.addAIPlayer());
         this.dom.leaveLobbyBtn.addEventListener('click', () => this.leaveLobby());
+        this.dom.lobbyBackBtn.addEventListener('click', () => {
+            this.hideOverlay(this.dom.lobbyOverlay);
+            this.showOverlay(this.dom.landingOverlay);
+        });
         this.dom.startGameBtn.addEventListener('click', () => this.startMultiplayerGame());
 
         // Game Interactions
@@ -409,7 +414,7 @@ class UIController {
 
         this.showOverlay(this.dom.landingOverlay);
         this.engine.state = null;
-        this.dom.logList.innerHTML = '';
+        if (this.dom.logList) this.dom.logList.innerHTML = '';
     }
 
     // ============= GAMEPLAY & TURN DRIVERS =============
@@ -461,7 +466,7 @@ class UIController {
                 gameState: this.engine.state
             });
 
-            this.showInteraction(result.result);
+            this.showAttackCardThenInteraction(result.result, result.card);
         }
     }
 
@@ -494,7 +499,7 @@ class UIController {
                         this.scheduleAITurn(1200);
                     }
                 } else if (result.action === 'attack') {
-                    this.showInteraction(result.result);
+                    this.showAttackCardThenInteraction(result.result, result.card);
                 }
             } else {
                 if (this.network.isHost) {
@@ -547,7 +552,7 @@ class UIController {
                         this.scheduleAITurn(1200);
                     }
                 } else if (result.action === 'attack') {
-                    this.showInteraction(result.result);
+                    this.showAttackCardThenInteraction(result.result, result.card);
                 }
             } else if (this.mode === 'online' && this.network.isHost) {
                 const result = this.engine.playCard(chosenCard.id, activePlayer.id);
@@ -737,6 +742,7 @@ class UIController {
     }
 
     addLog(msg) {
+        if (!this.dom.logList) return;
         const li = document.createElement('li');
         li.textContent = msg;
         li.classList.add('fade-in');
@@ -746,6 +752,46 @@ class UIController {
             this.dom.logList.removeChild(this.dom.logList.firstChild);
         }
         this.dom.logList.parentElement.scrollTop = this.dom.logList.parentElement.scrollHeight;
+    }
+
+    // ============= ATTACK CARD ANIMATION BEFORE INTERACTION =============
+
+    showAttackCardThenInteraction(result, attackCard) {
+        this.isAnimating = true;
+
+        // First, render the existing lead card (target) on the battlefield
+        this.dom.battlefieldSlot.innerHTML = '';
+        this.dom.battlefieldSlot.style.position = 'relative';
+
+        // Show the target (lead) card as the bottom card
+        const targetWrapper = document.createElement('div');
+        targetWrapper.className = 'battlefield-card';
+        targetWrapper.style.position = 'relative';
+        targetWrapper.style.zIndex = '1';
+        targetWrapper.style.transform = 'rotate(-4deg) translate(-8px, 4px)';
+        targetWrapper.style.transition = 'transform 0.3s ease';
+        const targetEl = this.createCardElement(result.targetCard, true, false);
+        targetEl.classList.remove('card-deal-in');
+        targetWrapper.appendChild(targetEl);
+        this.dom.battlefieldSlot.appendChild(targetWrapper);
+
+        // Stack the attack card on top with animation, offset, and rotation
+        const attackWrapper = document.createElement('div');
+        attackWrapper.className = 'battlefield-card card-to-field';
+        attackWrapper.style.position = 'absolute';
+        attackWrapper.style.top = '0';
+        attackWrapper.style.left = '0';
+        attackWrapper.style.zIndex = '2';
+        attackWrapper.style.transform = 'rotate(5deg) translate(8px, -4px)';
+        const attackEl = this.createCardElement(attackCard || result.attackerCard, true, false);
+        attackEl.classList.remove('card-deal-in');
+        attackWrapper.appendChild(attackEl);
+        this.dom.battlefieldSlot.appendChild(attackWrapper);
+
+        // Wait for the card animation to play, then show the interaction overlay
+        setTimeout(() => {
+            this.showInteraction(result);
+        }, 800);
     }
 
     // ============= INTERACTION DISPLAY OVERLAY =============
