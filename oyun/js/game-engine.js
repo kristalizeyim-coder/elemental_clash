@@ -370,7 +370,7 @@ class GameEngine {
 
         if (atkIsJoker) {
             // Attacker's Joker beats any card → sum of values
-            const totalPts = JOKER_POINTS + tgtVal;
+            const totalPts = attackerCard.value + targetCard.value;
             return {
                 type: 'JOKER_WIN',
                 title: '🃏 Joker Her Şeyi Yener!',
@@ -388,7 +388,7 @@ class GameEngine {
 
         if (tgtIsJoker) {
             // Target's Joker beats the attacker → sum of values
-            const totalPts = atkVal + JOKER_POINTS;
+            const totalPts = attackerCard.value + targetCard.value;
             return {
                 type: 'JOKER_WIN',
                 title: '🃏 Joker Her Şeyi Yener!',
@@ -411,7 +411,7 @@ class GameEngine {
 
         const key = `${attackerCard.element}_${targetCard.element}`;
         const inter = INTERACTIONS[key];
-        const points = inter.pts(atkVal, tgtVal);
+        const points = inter.pts(attackerCard.value, targetCard.value);
 
         let winnerPlayer = null;
         if (inter.winner === 'attacker') winnerPlayer = attackerId;
@@ -455,12 +455,12 @@ class GameEngine {
 
         if (atkVal > tgtVal) {
             winnerPlayer = atkOwnerId;
-            points = atkVal + tgtVal;
+            points = atk.value + tgt.value;
             title = `⚔️ ${atk.meta.emoji} Ayna Düellosu!`;
             desc = `Aynı element! ${atkName}'in daha güçlü kartı kazandı. (${atkVal} > ${tgtVal})`;
         } else if (tgtVal > atkVal) {
             winnerPlayer = tgtOwnerId;
-            points = atkVal + tgtVal;
+            points = atk.value + tgt.value;
             title = `⚔️ ${atk.meta.emoji} Ayna Düellosu!`;
             desc = `Aynı element! ${tgtName}'in daha güçlü kartı kazandı. (${tgtVal} > ${atkVal})`;
         } else {
