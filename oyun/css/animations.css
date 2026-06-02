@@ -2,8 +2,15 @@
 
 /* Card entrance */
 @keyframes card-deal {
-    0%   { opacity: 0; transform: translateY(-60px) rotateX(30deg) scale(0.6); }
-    100% { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
+    0% {
+        opacity: 0;
+        transform: translateY(-60px) rotateX(30deg) scale(0.6);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0) scale(1);
+    }
 }
 
 .card-deal-in {
@@ -11,19 +18,49 @@
 }
 
 /* Stagger delays for initial deal */
-.card-deal-in:nth-child(1) { animation-delay: 0.05s; }
-.card-deal-in:nth-child(2) { animation-delay: 0.1s; }
-.card-deal-in:nth-child(3) { animation-delay: 0.15s; }
-.card-deal-in:nth-child(4) { animation-delay: 0.2s; }
-.card-deal-in:nth-child(5) { animation-delay: 0.25s; }
-.card-deal-in:nth-child(6) { animation-delay: 0.3s; }
-.card-deal-in:nth-child(7) { animation-delay: 0.35s; }
+.card-deal-in:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.card-deal-in:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.card-deal-in:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.card-deal-in:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.card-deal-in:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.card-deal-in:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.card-deal-in:nth-child(7) {
+    animation-delay: 0.35s;
+}
 
 /* Card play to battlefield */
 @keyframes card-to-field {
-    0%   { opacity: 0; transform: scale(0.5) translateY(80px); }
-    60%  { transform: scale(1.1) translateY(-5px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(80px);
+    }
+
+    60% {
+        transform: scale(1.1) translateY(-5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .card-to-field {
@@ -32,23 +69,55 @@
 
 /* Card capture — won card flies out */
 @keyframes card-capture-left {
-    0%   { opacity: 1; transform: scale(1) translate(0, 0); }
-    100% { opacity: 0; transform: scale(0.5) translate(-200px, -50px) rotate(-15deg); }
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translate(-200px, -50px) rotate(-15deg);
+    }
 }
 
 @keyframes card-capture-right {
-    0%   { opacity: 1; transform: scale(1) translate(0, 0); }
-    100% { opacity: 0; transform: scale(0.5) translate(200px, -50px) rotate(15deg); }
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translate(200px, -50px) rotate(15deg);
+    }
 }
 
-.card-capture-left  { animation: card-capture-left 0.6s ease-in forwards; }
-.card-capture-right { animation: card-capture-right 0.6s ease-in forwards; }
+.card-capture-left {
+    animation: card-capture-left 0.6s ease-in forwards;
+}
+
+.card-capture-right {
+    animation: card-capture-right 0.6s ease-in forwards;
+}
 
 /* Card destroy */
 @keyframes card-destroy {
-    0%   { opacity: 1; transform: scale(1); filter: brightness(1); }
-    40%  { transform: scale(1.2); filter: brightness(2); }
-    100% { opacity: 0; transform: scale(0); filter: brightness(3); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    40% {
+        transform: scale(1.2);
+        filter: brightness(2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0);
+        filter: brightness(3);
+    }
 }
 
 .card-destroy {
@@ -57,8 +126,15 @@
 
 /* Card exit */
 @keyframes card-exit {
-    0%   { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.3) translateY(30px); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.3) translateY(30px);
+    }
 }
 
 .card-exit {
@@ -69,15 +145,28 @@
 
 /* Element clash flash */
 @keyframes clash-flash {
-    0%   { opacity: 0; transform: scale(0.5); }
-    30%  { opacity: 1; transform: scale(1.5); }
-    100% { opacity: 0; transform: scale(3); }
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(3);
+    }
 }
 
 .clash-flash {
     position: fixed;
-    top: 50%; left: 50%;
-    width: 100px; height: 100px;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
     margin: -50px 0 0 -50px;
     border-radius: 50%;
     pointer-events: none;
@@ -85,17 +174,42 @@
     animation: clash-flash 0.6s ease-out forwards;
 }
 
-.clash-flash.air   { background: radial-gradient(circle, var(--air-color), transparent); }
-.clash-flash.fire  { background: radial-gradient(circle, var(--fire-color), transparent); }
-.clash-flash.water { background: radial-gradient(circle, var(--water-color), transparent); }
-.clash-flash.earth { background: radial-gradient(circle, var(--earth-color), transparent); }
-.clash-flash.joker { background: radial-gradient(circle, #e040fb, transparent); }
+.clash-flash.air {
+    background: radial-gradient(circle, var(--air-color), transparent);
+}
+
+.clash-flash.fire {
+    background: radial-gradient(circle, var(--fire-color), transparent);
+}
+
+.clash-flash.water {
+    background: radial-gradient(circle, var(--water-color), transparent);
+}
+
+.clash-flash.earth {
+    background: radial-gradient(circle, var(--earth-color), transparent);
+}
+
+.clash-flash.joker {
+    background: radial-gradient(circle, #e040fb, transparent);
+}
 
 /* Score pop */
 @keyframes score-pop {
-    0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-    30%  { opacity: 1; transform: translateY(-20px) scale(1.2); }
-    100% { opacity: 0; transform: translateY(-60px) scale(1); }
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(1);
+    }
 }
 
 .score-pop {
@@ -111,15 +225,28 @@
 
 /* Sinergy burst */
 @keyframes sinergy-burst {
-    0%   { opacity: 0; transform: scale(0); }
-    50%  { opacity: 1; transform: scale(1.3); }
-    100% { opacity: 0; transform: scale(2); }
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
 }
 
 .sinergy-burst {
     position: fixed;
-    top: 50%; left: 50%;
-    width: 180px; height: 180px;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 180px;
     margin: -90px 0 0 -90px;
     border-radius: 50%;
     border: 3px solid var(--accent-gold);
@@ -131,8 +258,15 @@
 /* ============= PARTICLE SYSTEM ============= */
 
 @keyframes particle-float {
-    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--px), var(--py)) scale(0);
+    }
 }
 
 .particle {
@@ -152,8 +286,13 @@
 }
 
 @keyframes fadeIn {
-    0%   { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .slide-up {
@@ -161,14 +300,28 @@
 }
 
 @keyframes slideUp {
-    0%   { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Pulse for active player indicator */
 @keyframes active-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 64, 0.4); }
-    50%      { box-shadow: 0 0 0 8px rgba(255, 215, 64, 0); }
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 64, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 215, 64, 0);
+    }
 }
 
 .active-indicator {
@@ -177,9 +330,21 @@
 
 /* Shake for error/invalid action */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-6px); }
-    40%, 80% { transform: translateX(6px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-6px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(6px);
+    }
 }
 
 .shake {
